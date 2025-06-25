@@ -15,9 +15,11 @@ class Program{
 		try{
 			var lines = File.ReadLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tasks.txt"));
 			foreach(string line in lines){
-				string[] propriety = line.Split('-');
-				tasks.Add(new Task(propriety[0], propriety[1]));
+				string[] propriety = line.Split("~");
+				if(propriety[0] != null && propriety[1] != null) tasks.Add(new Task(propriety[0], propriety[1]));
+				else if(propriety[0] != null) tasks.Add(new Task(propriety[0], "No input provided"));
 			}
+
 		}catch(IOException e){
 			Console.WriteLine($"Could not open the file: {e.Message}");
 		}
@@ -46,7 +48,7 @@ class Program{
 				using (StreamWriter outputFile = new StreamWriter(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tasks.txt")))
         			{
             				foreach (Task task in tasks)
-                			outputFile.WriteLine(task.Name + '-' + task.Description);
+                			outputFile.WriteLine(task.Name + "~" + task.Description);
         			}
 				return;
 			break;
